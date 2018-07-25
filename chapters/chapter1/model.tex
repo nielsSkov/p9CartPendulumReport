@@ -1,7 +1,22 @@
 \section{Model}
-Here a model is presented using the conventions shown in \autoref{fig:system} and assuming zero friction in the system.
+A dynamical model of the system is derived, first by the energy method and then Newton's method. The model is based on the conventions presented in the freebody diagram in \autoref{fig:freeBody}.
 
-The energy method is applied to find the dynamic equations using generalized coordinates, $x$ and $\theta$, as defined in \autoref{fig:system}. The kinetic energy $T$ is given by,
+\begin{figure}[H]
+  \includegraphics[width=.5\textwidth]{figures/freeBody}
+  \caption{The cart pendulum system with generalized coordinates, $x$ and $\theta$, where $x$ is the center position of the cart, $\theta$ is the angle of the pendulum, $m$ is the point mass of the pendulum, $M$ is the mass of the cart, g is the gravitational acceleration and f is the force of actuation.}
+  \label{fig:freeBody}
+\end{figure}
+
+It is assumed that the pendulum rod is rigid and massless. This is deemed sensible, as the pendulum mass is much heavier than the hollow aluminum rod. The pendulum mass is modeled as a point mass placed at its geometrical center. This is why the length, $l$, is measured from the pivot point to the center of the pendulum mass.\\
+The mass of the cart includes the weight of the belt and the wires hanging from the cart to the controller and supply. The influence of the wires will vary depending on the position of the cart, but this is treated as an unmodeled disturbance.\\
+The frictions are assumed to consist solely of Coulomb and viscous friction. This is a fairly simplified friction model and while it might be advantageous to include further friction dynamics, such as stiction and Stribeck friction, it is considered to be out of scope in this project. Both viscous and Coulomb friction on the cart are assumed purely translational, and will therefore also include friction and inertia added by the motor and pulleys.
+
+\fxnote{review if all assumptions are included}
+
+\subsection{Energy Method}
+
+\fxnote{include friction model}
+The energy method is applied to find the dynamic equations using generalized coordinates, $x$ and $\theta$, as defined in \autoref{fig:freeBody}. The kinetic energy $T$ is given by,
 %
 \begin{flalign}
   T &= \frac{1}{2} M \dot{x}^2 + \frac{1}{2} m (\dot{x} + l \dot{\theta} \cos \theta )^2 + \frac{1}{2} m (-l \dot{\theta} \sin \theta )^2  & \nonumber \\ % \unit{N \cdot m}\\
@@ -64,12 +79,16 @@ Inserting the Lagrangian and reducing the expressions finally yields the dynamic
   \label{eq:dynamicEquation2}
 \end{flalign}
 
+\subsection{Newton's Method}
+
+\subsection{Simulation and Verification}
+
 A block diagram is derived in \autoref{fig:blockDiagram} from \autoref{eq:dynamicEquation1} and \autoref{eq:dynamicEquation2}.
 
 \begin{figure}[H]
-  \includegraphics[width=.5\textwidth]{figures/blockDiagram}
-  \caption{A block diagram derived from the dynamic equations, later used for simulation. The four signals in the top, $\theta$, $\dot{\theta}$ and $\ddot{\theta}$, are drawn without explicit connection only to keep the figure clear.}
+  \includegraphics[width=.7\textwidth]{figures/blockDiagramWithFriction}
+  \caption{A block diagram derived from the dynamic equations, later used for simulation. Five signal connections, from $\dot{\theta}$, $\ddot{\theta}$, $\ddot{x}$ and two from $\theta$, are drawn without explicit connection to keep the figure clear.}
   \label{fig:blockDiagram}
 \end{figure}
 
-This is implemented in Matlab Simulink to be able to simulate the system. A graphical layer, including the obstacles, is added to the simulation to show the system in action.
+This is implemented in Matlab Simulink to simulate the system. A graphical layer, including the obstacles, is added to the simulation to show the system in action.
