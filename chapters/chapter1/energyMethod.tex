@@ -1,0 +1,112 @@
+\subsection{Energy Method}
+The energy method is applied to find the dynamic equations starting by using excessive coordinates. The potential and kinetic energy for the pendulum is,
+\begin{flalign}
+  U_p &= mgh                                                           & \unit{\cdot} \\
+  T_p &= \tfrac{1}{2} m \dot{x}_p^2 + \tfrac{1}{2} m \dot{y}_p^2 \ \ \ , & \unit{\cdot}
+  \label{eq:pendulumEnergy}
+\end{flalign}
+\begin{where}\\
+  \va{ U_p   }{is the potential energy of the pendulum}    {\cdot}
+  \va{ T_p   }{is the kinetic energy of the pendulum}      {\cdot}
+  \va{ h     }{is the height of the pendulum point mass}   {m}
+\end{where}
+
+where the height, $h$, is given in relation to the pendulum at rest at $\theta = \pm \pi n$ by,
+\begin{flalign}
+  h &= l( 1 + \cos \theta ) \ \ \ . & \unit{\cdot}
+  \label{eq:height}
+\end{flalign}
+
+The potential and kinetic energy in excessive coordinates for the cart is,
+\begin{flalign}
+  U_c &= 0           & \unit{\cdot} \\
+  T_c &= \tfrac{1}{2} M \dot{x}_c^2   \ \ \ . & \unit{\cdot}
+  \label{eq:cartEnergy}
+\end{flalign}
+\begin{where}
+  \va{ U_c               }{is the potential energy of the cart}                    {\cdot}
+  \va{ T_c               }{is the kinetic energy of the cart}                      {\cdot}
+\end{where}
+
+There is no potential energy for the cart as it is constrained at $y_c=0$.\\
+The combined energies for the system in excessive coordinates is then,
+\begin{flalign}
+  U &= mgl( 1 + \cos \theta ) + 0    & \unit{\cdot} \\
+  T &= \tfrac{1}{2} m \dot{x}_p^2 + \tfrac{1}{2} m \dot{y}_p^2  + \tfrac{1}{2} M \dot{x}_c^2 \ \ \ , & \unit{\cdot}
+  \label{eq:excessivePotentialAndKinetic}
+\end{flalign}
+%
+Using the coordinate transformation from \autoref{eq:coordinateTransformation} and \ref{eq:transformationDerivatives} to obtain the energies of the system in generalized coordinates,
+\begin{flalign}
+  \begin{cases}
+    U &= mgl( 1 + \cos \theta ) + 0 \\
+    T &= \frac{1}{2} m ( \dot{x} - l\cos \theta \dot{\theta} )^2 + \frac{1}{2} m ( -l\sin \theta \dot{\theta} )^2  + \frac{1}{2} M \dot{x}^2 
+  \end{cases} && \nonumber
+\end{flalign}
+\vspace{-14pt}
+\begin{flalign}
+  \begin{cases}
+    U &= mgl( 1 + \cos \theta )     \\
+    T &= \frac{1}{2} ( M + m ) \dot{x}^2 - m \dot{x} l \cos \theta \dot{\theta} + \frac{1}{2} m l^2 \dot{\theta}^2 \ \ \ , 
+  \end{cases} & \unit{\cdot}
+  \label{eq:generalizedPotentialAndKinetic}
+\end{flalign}
+
+By \autoref{eq:generalizedPotentialAndKinetic} the Lagrangian becomes,
+%
+\begin{flalign}
+  \cal{L} &= T - U && \nonumber \\ 
+  \cal{L} &= \tfrac{1}{2} ( M + m ) \dot{x}^2 - m \dot{x} l \cos \theta \dot{\theta} + \tfrac{1}{2} m l^2 \dot{\theta}^2 - m g l( 1 + \cos \theta ) \ \ \ . & \unit{N \cdot m}
+  \label{eq:lagrangian}
+\end{flalign}
+%
+\begin{where}
+  \va{ \cal{L}           }{is the Lagrangian}                          {N \cdot m}
+\end{where}
+
+From the energy method\fxnote{source and thermonology on energy method} we find the dynamic equations by,
+%
+\begin{flalign}
+  \frac{\partial \cal{L}}{\partial \vec{q}} - \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \vec{\dot{q}}}  &=  0 \ \ \ . &&
+  \label{eq:energyMethod}
+\end{flalign}
+%
+\begin{where}
+  \va{ \vec{q}         }{is the generalized coordinates, $[\ \theta\ \ x\ ]^{T}$}             {}
+  \va{ \vec{\dot{q}}   }{is the generalized velocities, $[\ \dot{\theta}\ \ \dot{x}\ ]^{T}$} {}
+\end{where}
+
+In order to include external forces \fxnote{add formal mumbojumbo} d'Alambert principle,
+\begin{flalign}
+  \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \vec{\dot{q}}} - \frac{\partial \cal{L}}{\partial \vec{q}}  &=  \vec{Q} \ \ \ . &&
+  \label{eq:energyMethodWith external forces}
+\end{flalign}
+%
+\begin{where}
+  \va{ \vec{Q}   }{is the external forces, $[\ -B_p(\dot{\theta})\ \ F - B_c(\dot{x})\ ]^{T}$}   {}
+\end{where}
+
+
+
+For yields the final two dynamic equations, one for each of the generalized coordinates,
+%
+\begin{flalign}
+  \begin{cases}
+     \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \dot{\theta}} - \frac{\partial \cal{L}}{\partial \theta}  &= m \dot{x} l \sin \theta \dot{\theta} - m l \cos \theta \ddot{x} + m l^2 \ddot{\theta} - m \dot{x} l \sin \theta \dot{\theta} - m g l \sin \theta   \\ %\unit{N \cdot m}  \\
+     \frac{d}{dt}  \frac{\partial \cal{L}}{\partial \dot{x}}  - \frac{\partial \cal{L}}{\partial x} &=  ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta} - 0 \\ %\unit{N \cdot m}
+  \end{cases} \nonumber &&
+\end{flalign}
+\vspace{-14pt}
+\begin{flalign}
+  \begin{cases}
+    m l^2 \ddot{\theta} - m l \cos \theta \ddot{x} - m g l \sin \theta  = -B_p(\dot{\theta}) & \\                      %\unit{N \cdot m}  \\
+    ( M + m )\ddot{x} + m l \sin \theta \dot{\theta}^2 - m l \cos \theta \ddot{\theta}  =  F - B_c(\dot{x})  \ \ \ , &   %\unit{N \cdot m}
+  \end{cases} & \unit{\cdot}
+  \label{eq:energyDerivedDynamicEquations}
+\end{flalign}
+%
+which is the same result as achieved by Newton's method, as seen by comparing \autoref{eq:generalizedCoordinates} and \ref{eq:energyDerivedDynamicEquations}.
+
+
+
+

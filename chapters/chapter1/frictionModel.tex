@@ -1,0 +1,31 @@
+\section{Friction and Motor Model}\label{sec:frictionModel}
+In the previous, the friction is represented as functions of velocities, $B_c(\dot{x})$ and $B_p(\dot{\theta})$.
+\fxnote{friction sorurce} \fxnote{friction plots} \fxnote{friction tanh approx}
+%
+\begin{flalign}
+  B_p(\dot{\theta}) &= b_{p,v} \dot{\theta} + \text{sgn}(\dot{\theta}) b_{p,c}        & \unit{N}  \\
+  B_c(\dot{x})      &= b_{c,v} \dot{x}      + \text{sgn}(\dot{x}) b_{c,c}   \ \ \ ,   & \unit{N}
+  \label{eq:friction}
+\end{flalign}
+\begin{where}                                                                     % written out SI
+  \va{ b_{p,v}   }{is the pendulum viscous friction}  {N \cdot m \cdot s}         % [kg m s^-2]
+  \va{ b_{p,c}   }{is the pendulum coulomb friction}  {N \cdot m}                 % [kg s^-1]
+  \va{ b_{c,v}   }{is the cart viscous friction}      {N \cdot m^{-1} \cdot s}    % [kg m^2 s^-2]
+  \va{ b_{c,c}   }{is the cart coulomb friction}      {N}                         % [kg m^2 s^-1]
+\end{where}
+
+The frictions are assumed to consist solely of Coulomb and viscous friction. This is a fairly simplified friction model and while it might be advantageous to include further friction dynamics, such as stiction and Stribeck friction, it is considered to be out of scope in this project.
+
+The input force so far is represented by $F$, which is directly applied in the positive $x$ direction on the cart. As seen in the beginning of this chapter in \autoref{fig:systemSetup}, this force is applied by a motor mounted with a belt on pulleys.
+Because the motor control unit\fxnote{refer system description} is set up in current control mode the electrical motor dynamics are already accounted for. The controllable input is therefore the motor current, $i_a$. The torque, $\tau_m$ of the motor is modeled as directly proportional to the motor current by a torque constant, $k_\tau$, as stated in \textit{Hardware} \autoref{sec:hardware},
+%
+\begin{flalign}
+  \tau_m &= k_\tau i_a       & \unit{N \cdot m}  
+  \label{eq:motorTorque}
+\end{flalign}
+
+To translate this torque to the belt it is divided by the radius, $r$, of the pulley,
+\begin{flalign}
+  F &= \tfrac{1}{r} k_\tau i_a       & \unit{N}  
+  \label{eq:motorForce}
+\end{flalign}
