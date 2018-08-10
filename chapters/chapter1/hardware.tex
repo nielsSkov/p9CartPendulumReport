@@ -1,8 +1,8 @@
-\section{Hardware}\label{sec:hardware}
-This section provides a brief overview of the hardware used in the cart pendulum setup.
+%\section{Hardware}\label{sec:hardware}
+%This section provides a brief overview of the hardware used in the cart pendulum setup.
 \fxnote{add picture of the system (showing wires on cart)}
-
-\subsection{Motors}
+%
+\section{Motors}\label{sec:motors}
 There are two Maxon 370356 brushed DC motors, see \autoref{fig:maxonMotor}, used in the setup. \fxnote{source}.
 
 % https://www.maxonmotor.com/maxon/view/product/motor/dcmotor/re/re50/370356
@@ -37,7 +37,7 @@ The most interesting characteristic of the maxon motor for the purposes of this 
 
 One of the motors is mounted on a pulley driving the belt, see \autoref{fig:systemSetup}. The other motor is disabled and acts only as a bearing at the pendulum pivot point.
 
-\subsection{Motor Encoders}
+\section{Motor Encoders}
 
 Each of the two motors are equipped with an HEDS 5540 optical quadrature encoder, see \autoref{fig:maxonMotor}. The moment of inertia added by the encoder is negligibly small at only \SI{0.6e-6}{kg\cdot m^2} and is not mentioned further in this report.
 
@@ -50,11 +50,8 @@ Each of the two motors are equipped with an HEDS 5540 optical quadrature encoder
   \label{fig:encoder}
 \end{figure}
 
-The encoder is decoded using an Avago HCTL-2021-PLC decoder which outputs 2000 ticks pr. revolution\fxnote{source} resulting in a resolution of $2\pi/2000=$ \SI{\pi e-3} rad/tic, for the pendulum angle, $\theta$, and $2\pi r /2000=2\pi\cdot 0.028 /2000\approx$ \SI{0.088e-3} m/tic for the position along $x$.
-
-\subsection{Motor Controller}
-
-Maxon ADS 50/10 motor controller
+\section{Motor Controller}
+Two Maxon ADS 50/10 motor controllers, see \autoref{fig:maxonMotorController}, are mounted on the cart pendulum setup. One on the side to control the driving motor and the other, not used in this project, mounted on the cart. The datasheet states that the motor controller weights \SI{0.38}{kg}, but again, since the remaining mass of the cart is unknown and can not be measured, the cart mass must be estimated.\fxnote{source}
 
 % https://www.maxonmotor.com/maxon/view/product/control/Servoverstaerker-4-Q-DC/201583
 \fxnote{see url source in comment}
@@ -65,17 +62,39 @@ Maxon ADS 50/10 motor controller
   \label{fig:maxonMotorController}
 \end{figure}
 
-\subsection{Micro Controller}
+The motor controller can be configured in four different modes,
+\vspace{-10pt}
+\begin{itemize}
+  \item[-] Speed control using tacho signals
+  \item[-] Speed control using encoder signals
+  \item[-] IxR compensated speed control
+  \item[-] Torque or current control
+\end{itemize}
+\vspace{-10pt}
+The first three modes are forms of speed control while the last is current control relating directly to torque and thereby also force on the belt. The chosen mode for this project is therefore current control. The conversion from armature current to motor torque is by use of the torque constant given in \autoref{table:motorParameters}. To set the armature current the motor controller requires a $\pm$\SI{10}{V} input signal. This input is provided through a shield from the microcontroller, so the conversion to armature current is handled in the following.\fxnote{source}
 
-Arduino Teensy 3.6
+\section{Micro Controller}
+The control design is implemented on a Teensy 3.6 microcontroller, see \autoref{fig:teensy3_6}, provided in the setup. The armature current reference is provided through one of the microcontroller's two 12 bit DAC's (Digitl-to-Analog Converter) placed on an external pin of the microcontroller. The Teensy 3.6 runs on \SI{3.3}{V} provided by an onboard regulator from \SI{5}{V} USB supply, and so the analog output is in the range of $0-$\SI{3.3}{V} with a 12 bit resolution.\\
+The motor encoders are decoded on the shield, see next section, and read through an 8 bit parallel data bus by the microcontroller.
 
 \fxnote{source: https://www.sparkfun.com/products/14057}
 
 \begin{figure}[H]
-  \includegraphics[width=.2\textwidth]{figures/arduinoTeensy36}
-  \caption{arduinoTeensy36}
-  \label{fig:arduinoTeensy36}
+  \includegraphics[width=.2\textwidth]{figures/teensy3_6}
+  \caption{teensy3.6}
+  \label{fig:teensy3_6}
 \end{figure}
 
-\subsection{Shield}
-Interface as described by... \fxnote{reference and at least some explanation}
+The Teensy 3.6 uses a bootloader which allows programming through USB using the Teensyduino add-on for the Arduino IDE.
+
+\section{Shield}
+A shield located by the microcontroller handles conversion/interfacing between the microcontroller and the setup. The motor encoders are decoded using Avago HCTL-2021-PLC decoders, mounted on the shield, which outputs 2000 ticks pr. revolution.\fxnote{source} This results in a resolution of $2\pi/2000=$ \SI{\pi e-3} rad/tic, for the pendulum angle, $\theta$, and $2\pi r /2000=\nolinebreak 2\pi\cdot 0.028 /2000\approx$ \SI{0.088e-3} m/tic for the position along $x$.
+The armature current reference is provided from the microcontroller which as mentioned outputs $0-$\SI{3.3}{V} while the motor controller requires a $\pm$\SI{10}{V} input. This is handled by an amplification on the shield converting the $0-$\SI{3.3}{V} to the required $\pm$\SI{10}{V}.
+A previous project group has tested the relation between armature current and different 12 bit values from the micro controller. The test was conducted using a current clamp and an oscilloscope to measure the armature current in the motor. By linear regression they arrived at the following relation,
+%
+\begin{flalign}
+  \text{bit}_\text{DAC} &= 105.78 \cdot I_{a} + 1970   & 
+  \label{eq:Ia-bit}
+\end{flalign}
+
+\fxnote{mention force test here}
