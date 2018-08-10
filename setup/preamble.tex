@@ -96,7 +96,14 @@
   right=25mm,% right margin on an odd page
   top=35mm,
   ]{geometry}
-  
+
+%break margins when you need to on only part of a page if needed
+\usepackage{changepage}
+%syntax
+% \begin{adjustwidth}{-1.2cm}{-1.2cm}
+%    [ big object ]
+% \end{adjustwidth}
+
 % Modify how \chapter, \section, etc. look
 % The titlesec package is very configureable
 \usepackage{titlesec}
