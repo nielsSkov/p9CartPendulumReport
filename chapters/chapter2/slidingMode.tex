@@ -78,9 +78,17 @@ further, a tuning parameter, $\beta_0$, is introduced,
 F &= -\text{sgn}(s)\beta (\vec{\eta},\xi) \ \ \ \ \text{where}, \ \ \ \beta(\vec{\eta},\xi) = \varrho(\vec{\eta},\xi) + \beta_0  \ \ \ , &
 \label{eq:ssControlBeta0}
 \end{flalign}
-
+%where $\varrho(\vec{\eta},\xi)$ is redefined as an upper bound on $\left|\frac{\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)}{g_b(\vec{\eta},\xi)} \right|$ within the region of interest.\\
+The gain design is based on a maximum possible catch angle, $\theta_\mathrm{max}$, which is defined from zero angular velocity. The position and velocity along $x$ does not interfere with the value of $\theta_\mathrm{max}$, so long as the angular velocity of the pendulum is zero. Note, if the pendulum is falling away from equilibrium, its non-zero angular velocity will work against the controller and the catch angle will be smaller. However, similarly, if the pendulum is approaching equilibrium, the controller's catch angle will be larger.\\
+While there will be other combinations of $\theta$ and $\dot{\theta}$ in the region of interest requiring as much actuation as $(\theta,\dot{\theta})=(\theta_\mathrm{max},0)$, these initial values are chosen to be on the edge of the region in the proceeding design.\\
+In \autoref{fig:chooseRho}, $\varrho(\vec{\eta},\xi)$ and the required peak armature current magnitude, $|i_{a,\mathrm{peak}}|$, are plotted for different initial angles, $\theta\mathrm{init}$, to see how large a gain is feasible while staying within the actuation limitation of the motor, $i_{a,\mathrm{max}} = \SI{4.58}{A}$, see \textit{Motors} \autoref{sec:motors}.
 %
-%\begin{flalign}
-%  \vec{\dot{\eta}} &=  f_a(\vec{\eta},\xi)    \\
-%  \dot{\xi}        &=  f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) F    \ \ \ , &
-%\end{flalign}
+\begin{figure}[H]
+  \includegraphics[width=.75\textwidth]{figures/chooseRho}
+  \caption{$\dot{\theta}=0$ horizontal line marks $\theta_\mathrm{max} = 0.0660$ dictated by the current limitation of the motor, $i_{a,\mathrm{max}} = \SI{4.58}{A}$, and thereby indicating the maximum gain, $\varrho(\vec{\eta},\xi) = 15.1776$, with $\beta_0=0.1$, allowing some margin for the supposed operational region.}
+  \label{fig:chooseRho}
+\end{figure}
+
+
+
+
