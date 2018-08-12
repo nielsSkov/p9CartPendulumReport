@@ -93,8 +93,39 @@ The armature current reference is provided from the microcontroller which as men
 A previous project group has tested the relation between armature current and different 12 bit values from the micro controller. The test was conducted using a current clamp and an oscilloscope to measure the armature current in the motor. By linear regression they arrived at the following relation,
 %
 \begin{flalign}
-  \text{bit}_\text{DAC} &= 105.78 \cdot I_{a} + 1970   & 
+  \text{bit}_\text{DAC} &= 105.78 \cdot i_{a} + 1970  \ \ \ . & 
   \label{eq:Ia-bit}
 \end{flalign}
+%
+An other way of measuring the current is from an output directly on the motor controller. It is found that this output is slightly different than the current measured directly over the motor using a current clamp. It is difficult to know if the torque constant supplied by the company is matched using one or the other way of measuring. So a test is conducted to verify \autoref{eq:Ia-bit}, in which the steady state hold force is measured directly on the cart using a luggage scale as an alternative Newton-meter. The results of the force test are seen in \autoref{fig:forceTest1} and \ref{fig:forceTest2} and a test journal is provided in \fxnote{refference appendix}.
 
-\fxnote{mention force test here}
+\begin{figure}[H]
+  \hspace{-10pt}
+  \captionbox
+  {
+    forceTest1
+    \label{fig:forceTest1}
+  }
+  {
+    %\hspace{-1cm}
+    \includegraphics[width=.45\textwidth]{figures/forceTest1}%\vspace{-11pt}
+  }
+  \hspace{20pt}
+  \captionbox 
+  {
+    forceTest2
+    \label{fig:forceTest2}
+  }
+  {
+    %\hspace{-1cm}
+    \includegraphics[width=.45\textwidth]{figures/forceTest2}\vspace{6pt}
+  }  
+\end{figure}
+
+The measurements should be more correct at higher forces since friction then causes less disturbance in the measurements. However, no measurements are excluded in the regression as it is noted that the regression line fits the upper part of the data very well. Measurements lower than $F = 2.95$ were considered unreliable due to friction and therefore not included in the data-set.
+In \autoref{fig:forceTest1} the armature current is scaled using \autoref{eq:Ia-bit} and the theoretical line is calculated using that $F = \tfrac{1}{r} k_\tau i_a$. As the theoretical line does not coincide exactly with the least square regression, \autoref{eq:Ia-bit} is tweaked so that,
+\begin{flalign}
+  \text{bit}_\text{DAC} &= 111.9 \cdot i_{a} + 1970  \ \ \ , & 
+  \label{eq:Ia-bit-corrected}
+\end{flalign}
+which leads to the result seen in \autoref{fig:forceTest2}, where the theoretical line now coincide with the least square regression of the measurement data.
