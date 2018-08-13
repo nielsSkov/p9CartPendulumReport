@@ -59,23 +59,24 @@ First a Lyapunov function candidate, $V = \frac{1}{2}s^2$, is chosen and its der
   \dot{V} &= s ( \dot{\xi} + \vec{k}\vec{\dot{\eta}}  ) & \\
   \dot{V} &= s ( f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) F +\vec{k}f_a(\vec{\eta},\xi) )  & \\
   \dot{V} &= ( \vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi) )s + g_b(\vec{\eta},\xi) s F  & \\
-  \dot{V} &= g_b(\vec{\eta},\xi) s \frac{\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)}{g_b(\vec{\eta},\xi)} + g_b(\vec{\eta},\xi) s F  &  \\
-  \dot{V} &\leq g_b(\vec{\eta},\xi) |s| \left|\frac{\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)}{g_b(\vec{\eta},\xi)} \right| + g_b(\vec{\eta},\xi) s F  \ \ \ . &
+  \dot{V} &= g_b(\vec{\eta},\xi) s (\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)) g_b^{-1}(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) s F  &  \\
+  \dot{V} &\leq g_b(\vec{\eta},\xi) |s| \left|\vec{k}f_a(\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) +  f_b(\vec{\eta},\xi) \right| + g_b(\vec{\eta},\xi) s F  \ \ \ . &
   \label{eq:lyapunov}
 \end{flalign}
-Using that $|s| = \text{sgn}(s)$ to design $F$ such that the two terms in \autoref{eq:lyapunov} cancels and the stability criterion is fulfilled,
+Using that $|s| = \text{sgn}(s) s$ to design $F$ such that the two terms in \autoref{eq:lyapunov} cancels and the stability criterion is fulfilled,
 \begin{flalign}
-\dot{V} &\leq g_b(\vec{\eta},\xi) |s| \left|\frac{\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)}{g_b(\vec{\eta},\xi)} \right| - g_b(\vec{\eta},\xi) \text{sgn}(s) s \left|\frac{\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)}{g_b(\vec{\eta},\xi)} \right|   &
+\dot{V} &\leq g_b(\vec{\eta},\xi) |s| \left|\vec{k}f_a(\vec{\eta},\xi) +  f_b(\vec{\eta},\xi) \right|  g_b^{-1}(\vec{\eta},\xi)  & \nonumber \\
+&- g_b(\vec{\eta},\xi) \text{sgn}(s) s \left|\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi) \right| g_b^{-1}(\vec{\eta},\xi)  &
 \label{eq:lyapunov2}
 \end{flalign}
 s.t.
 \begin{flalign}
-F &= -\text{sgn}(s)\varrho(\vec{\eta},\xi) \ \ \ \ \text{where}, \ \ \ \varrho(\vec{\eta},\xi)  \geq \left|\frac{\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)}{g_b(\vec{\eta},\xi)} \right|  \ \ \ , &
+F &= -\text{sgn}(s)\varrho(\vec{\eta},\xi) g_b^{-1}(\vec{\eta},\xi) \ \ \ \ \text{where}, \ \ \ \varrho(\vec{\eta},\xi)  \geq \left|\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi) \right|   \ \ \ , &
 \label{eq:ssControlBeta}
 \end{flalign}
 further, a tuning parameter, $\beta_0$, is introduced,
 \begin{flalign}
-F &= -\text{sgn}(s)\beta (\vec{\eta},\xi) \ \ \ \ \text{where}, \ \ \ \beta(\vec{\eta},\xi) = \varrho(\vec{\eta},\xi) + \beta_0  \ \ \ , &
+F &= -\text{sgn}(s)\beta (\vec{\eta},\xi) \ \ \ \ \text{where}, \ \ \ \beta(\vec{\eta},\xi) = \varrho(\vec{\eta},\xi) + \beta_0  \ \ \ . &
 \label{eq:ssControlBeta0}
 \end{flalign}
 %where $\varrho(\vec{\eta},\xi)$ is redefined as an upper bound on $\left|\frac{\vec{k}f_a(\vec{\eta},\xi)  +  f_b(\vec{\eta},\xi)}{g_b(\vec{\eta},\xi)} \right|$ within the region of interest.\\

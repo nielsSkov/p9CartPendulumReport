@@ -27,3 +27,18 @@ As mentioned, some parameters could not be measured directly. These parameter we
 \end{table}
 
 Though the inertia of the rotor is stated in the datasheet of the motor, see \textit{Motors} \autoref{sec:motors}, the added inertia and mass of from the pulley and belt is unknown. Further, both viscous and Coulomb friction on the cart are assumed purely translational. Similarly, though the weights of motor and motor controller mounted on the cart are known, the collective weight of the cart is unknown. For these reasons, the cart weight, viscous and Coulomb friction were estimated by the previous group such that they include friction and inertia added by the motor, belt and pulleys.\fxnote{reference to old report}
+
+
+
+%        FROM CODE
+%        // ---------------Model parameters------------------------//
+%        float r_pulley = 0.028;
+%        float K_t = 0.0934;
+%        //float B_c_pos = 3.0212;
+%        float B_c_neg = 2.7464;
+%        float B_v_pos = 1.936;
+%        float B_v_neg = 1.422;
+%        float B_v_c = B_v_pos;
+%        float l = 0.3235;
+%        float m_c = 5.273;
+%        float m_b = 0.201;
