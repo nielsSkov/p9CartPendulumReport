@@ -1,0 +1,44 @@
+\section{Parameters}
+As mentioned, some parameters could not be measured directly. These parameter were estimated by a previous group\cite{JHHorgensen}. A table of the values they estimated along with directly measurable values are stated in \autoref{table:systemParameters}.
+
+\begin{table}[H]
+  \begin{tabular}{|lp{.4cm}|l|l|l|}
+    \hline %--------------------------------------------------------------------------------
+    \textbf{Parameter}        &   & \textbf{Notation} & \textbf{Quantity} & \textbf{Unit} \\
+    \hline %--------------------------------------------------------------------------------
+    Pendulum Mass             &   &   $m$             &                   &  kg           \\
+    \hline %--------------------------------------------------------------------------------
+    Cart Mass                 & * &   $M$             &                   &  kg           \\
+    \hline %--------------------------------------------------------------------------------
+    Rod Length                &   &   $l$             &                   &  m            \\
+    \hline %--------------------------------------------------------------------------------
+    Pulley Radius             &   &   $r$             &                   &  m            \\
+    \hline %--------------------------------------------------------------------------------
+    Cart Coulomb Friction     & * &   $b_{c,c}$       &                   &  N            \\
+    \hline %--------------------------------------------------------------------------------
+    Cart Viscous Friction     & * &   $b_{c,v}$       &                   &  N$\cdot$m$^{-1}\cdot$s \\
+    \hline %--------------------------------------------------------------------------------
+    Pendulum Coulomb Friction & * &   $b_{p,c}$       &                   &  N$\cdot$m              \\
+    \hline %--------------------------------------------------------------------------------
+    Pendulum Viscous Friction & * &   $b_{p,v}$       &                   &  N$\cdot$m$\cdot$s      \\
+    \hline %--------------------------------------------------------------------------------
+  \end{tabular}
+  \caption{'*' indicates that the parameter is estimated.\label{table:systemParameters}}
+\end{table}
+
+Though the inertia of the rotor is stated in the datasheet of the motor, see \textit{Motors} \autoref{sec:motors}, the added inertia and mass of from the pulley and belt is unknown. Further, both viscous and Coulomb friction on the cart are assumed purely translational. Similarly, though the weights of motor and motor controller mounted on the cart are known, the collective weight of the cart is unknown. For these reasons, the cart weight, viscous and Coulomb friction were estimated by the previous group such that they include friction and inertia added by the motor, belt and pulleys.\cite{JHHorgensen}
+
+
+
+%        FROM CODE
+%        // ---------------Model parameters------------------------//
+%        float r_pulley = 0.028;
+%        float K_t = 0.0934;
+%        //float B_c_pos = 3.0212;
+%        float B_c_neg = 2.7464;
+%        float B_v_pos = 1.936;
+%        float B_v_neg = 1.422;
+%        float B_v_c = B_v_pos;
+%        float l = 0.3235;
+%        float m_c = 5.273;
+%        float m_b = 0.201;

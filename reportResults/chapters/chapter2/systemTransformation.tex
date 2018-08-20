@@ -1,0 +1,374 @@
+\section{System Transformation}
+To develop a sliding mode controller, the system is first transformed into a \textit{regular form}, \fxnote{source}
+\begin{flalign}
+  \vec{\dot{\eta}} &=  f_a(\vec{\eta},\vec{\xi}) \label{eq:regularForm1}   \\
+  \vec{\dot{\xi}}  &=  f_b(\vec{\eta},\vec{\xi}) + g_b(\vec{\eta},\vec{\xi}) F    \ \ \ . &
+  \label{eq:regularForm2}
+\end{flalign}
+The system is first presented on nonlinear state space form, from \autoref{eq:energyDerivedDynamicEquations},
+%
+\begin{flalign}
+  \begin{bmatrix}
+    m l^2              & -m l \cos \theta  \\
+    -m l \cos \theta   & M + m
+  \end{bmatrix}
+  \begin{bmatrix}
+    \ddot{\theta}  \\
+    \ddot{x}
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    -m g l \sin \theta  \\
+    m l \sin \theta \dot{\theta}^2
+  \end{bmatrix}
+  &=
+  \begin{bmatrix}
+    -B_p(\dot{\theta})  \\
+     F - B_c(\dot{x})
+  \end{bmatrix} &
+  \label{eq:nonlinearSS1}
+\end{flalign}
+%
+By rearranging \autoref{eq:nonlinearSS1}, 
+\begin{flalign}
+  \begin{bmatrix}
+    m l^2              & -m l \cos \theta  \\
+    -m l \cos \theta   & M + m
+  \end{bmatrix}
+  \begin{bmatrix}
+    \ddot{\theta}  \\
+    \ddot{x}
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    0  \\
+    m l \sin \theta \dot{\theta}^2
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    B_p(\dot{\theta})  \\
+    B_c(\dot{x})
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+  -m g l \sin \theta  \\
+  0
+  \end{bmatrix}
+  &=
+  \begin{bmatrix}
+    0  \\
+    F
+  \end{bmatrix} \ \ \ , &
+\end{flalign}
+%
+the achieved form is that of the general dynamic equations for an m-link robot, \cite{MWSpong, LSciavicco}
+\begin{flalign}
+  \vec{M}(\vec{q})\vec{\ddot{q}} + \vec{C}(\vec{q},\vec{\dot{q}}) + \vec{B}(\vec{\dot{q}}) + \vec{G}(\vec{q}) &= \vec{F} \ \ \ . &
+\end{flalign}
+\begin{where}
+  \va{ \vec{M}(\vec{q})\vec{\ddot{q}}  }{is the inertia matrix}                    {}
+  \va{ \vec{C}(\vec{q},\vec{\dot{q}})  }{is the Coriolis and centrifugal effects}  {}
+  \va{ \vec{B}(\vec{\dot{q}})          }{is the friction}                          {}
+  \va{  \vec{G}(\vec{q})               }{is the force due to gravity}              {}
+  \va{  \vec{F}                        }{is the input force}                       {}
+\end{where}
+
+Isolating the accelerations,
+\begin{flalign}
+  \vec{\ddot{q}}
+  &=
+  \vec{M}^{-1}(\vec{q})
+  \left(
+    \vec{F} -\vec{C}(\vec{q},\vec{\dot{q}}) -\vec{B}(\vec{\dot{q}}) -\vec{G}(\vec{q})
+  \right) \ \ \ , &
+\end{flalign}
+%
+and choosing the state vector to be $ [\ x_1\ x_2\ x_3\ x_4\ ]^T = [\ \theta\ x\ \dot{\theta}\ \dot{x}\ ]^T $, the nonlinear state space representation is then,
+%
+\begin{flalign}
+  \begin{bmatrix}
+    \dot{x_1} \\
+    \dot{x_2} \\
+    \dot{x_3} \\
+    \dot{x_4}
+  \end{bmatrix}
+&=
+  \begin{bmatrix}
+    x_3  \\
+    x_4  \\
+    \vec{M}^{-1}(x_1)
+    \left(
+    -\vec{C}(x_1,x_3) -\vec{B}(x_3,x_4) -\vec{G}(x_1)
+    \right)
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    0  \\
+    0  \\
+    \vec{M}^{-1}(x_1)   \begin{bmatrix}
+                          0  \\
+                          F
+                        \end{bmatrix}
+  \end{bmatrix} \ \ \ , &
+\end{flalign}
+%
+where,
+\begin{flalign}
+  \vec{M}^{-1}
+  &=
+  \frac{1}{\text{det}(\vec{M})} \text{adj}(\vec{M})
+  =
+  \begin{bmatrix}
+    \frac{(M + m)}{l^2 m ( M + m - m \cos^2 x_1 )}  &  \frac{\cos x_1}{l (M + m - m \cos^2 x_1)} \\
+    \frac{\cos x_1}{l (M + m - m \cos^2 x_1)}       &  \frac{1}{M + m - m \cos^2 x_1}
+  \end{bmatrix}  \ \ \ . &
+\end{flalign}
+%
+Introducing following notation,
+\begin{flalign}
+  \begin{bmatrix}
+    \dot{x_1} \\
+    \dot{x_2} \\
+    \dot{x_3} \\
+    \dot{x_4}
+  \end{bmatrix}
+  &=
+  \underbrace{ 
+    \begin{bmatrix}
+      x_3  \\
+      x_4  \\
+      f_1(\vec{x})  \\
+      f_2(\vec{x})
+    \end{bmatrix}
+  }_{f(\vec{x})}
+  +
+  \underbrace{ 
+    \begin{bmatrix}
+      0  \\
+      0  \\
+      \frac{\cos x_1}{l (M + m - m \cos^2 x_1)} \\
+      \frac{1}{M + m - m \cos^2 x_1}
+    \end{bmatrix}
+  }_{g(\vec{x})}
+  F \ \ \ . &
+  \label{eq:reducedNonlinearStateSpace}
+\end{flalign}
+%
+where,
+%
+\begin{flalign}
+f_1(\vec{x}) &=  \frac{(M + m) (  -B_p(x_3) + m g l \sin x_1  )}{l^2 m ( M + m - m \cos^2 x_1 )}   -    \frac{\cos x_1 (  m l \sin x_1 x_3^2 + B_c(x_4)  )}{l (M + m - m \cos^2 x_1)}  & \\
+f_2(\vec{x}) &=  \frac{\cos x_1 (  -B_p(x_3) + m g l \sin x_1  )}{l (M + m - m \cos^2 x_1)}   -   \frac{ m l \sin x_1 x_3^2 + B_c(x_4) }{M + m - m \cos^2 x_1}       \ \ \ , &
+\end{flalign}
+%
+to reduce notation in the derivation of the transformation into \textit{regular form}.
+
+Choosing the pendulum angle as the output s.t. $y = h(\vec{x}) = x_1$, the relative degree is found by,
+\begin{flalign}
+\dot{y}  &= \dot{x_1} = x_3 & \\
+\ddot{y} &= \dot{x_3} = f_1(\vec{x}) + \frac{\cos x_1}{l (M + m - m \cos^2 x_1)} F \ \ \ , &
+\end{flalign}
+where the output is found in the second derivative of the output, resulting in relative degree of two, $\rho = 2$, which gives rise to the following transform \fxnote{source},
+%
+\begin{flalign}
+T(\vec{x})
+&=
+\begin{bmatrix}
+  \vec{\phi}(\vec{x}) \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+  \begin{picture} (0,0)(0,0) \multiput(1,14)(4,0){6}{\line(2,0){2}} \end{picture}
+  \vec{\psi}(\vec{x})
+\end{bmatrix} 
+=
+\begin{bmatrix}
+  \phi_1(\vec{x}) \\
+  \phi_2(\vec{x}) \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+  \begin{picture} (0,0)(0,0) \multiput(-5.5,14)(4,0){9}{\line(2,0){2}} \end{picture}
+  h(\vec{x}) \\
+  L_f h(\vec{x})
+\end{bmatrix}
+=
+\begin{bmatrix}
+  \phi_1(\vec{x}) \\
+  \phi_2(\vec{x}) \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+  \begin{picture} (0,0)(0,0) \multiput(-7,14)(4,0){7}{\line(2,0){2}} \end{picture}
+  x_1 \\
+  x_3
+\end{bmatrix}  \ \ \ , &
+\end{flalign}
+%
+where $L_f h(\vec{x})$ is the \textit{Lie derivative} of $h(\vec{x})$ along $f(\vec{x})$. The functions $\phi_i(\vec{x})$ are chosen such that they satisfy,
+\begin{flalign}
+  \frac{\partial \phi_i}{\partial \vec{x} }  g(\vec{x})  &= 0 \ , \ \ \text{for} \ 1 \leq i \leq 2 \ \ \ ,& 
+  \label{eq:gZeroCondition}
+\end{flalign}
+which ensures that the input cancels in $ \frac{d \vec{\phi}}{d t } = \frac{\partial \vec{\phi}}{\partial \vec{x} } [ f(\vec{x}) + g(\vec{x}) F ]$,
+
+Both $\phi_1(\vec{x}) = x_1$ and $\phi_1(\vec{x}) = x_2$ would satisfy \autoref{eq:gZeroCondition}, however $\phi_1(\vec{x}) = x_1$ would result in a rank defisit in $T(\vec{x})$, so $\phi_1(\vec{x}) = x_2$ is chosen. For $\phi_2(\vec{x})$, it follows from \autoref{eq:gZeroCondition} that, 
+\begin{flalign}
+  \frac{\partial \phi_2}{\partial x_3 } \cdot \frac{\cos x_1}{l (M + m - m \cos^2 x_1)}  &+  \frac{\partial \phi_2}{\partial x_4 } \cdot \frac{1}{M + m - m \cos^2 x_1}  =  0   & \\
+  \frac{\partial \phi_2}{\partial x_3 } \cdot \frac{\cos x_1}{l (M + m - m \cos^2 x_1)}  &+  \frac{\partial \phi_2}{\partial x_4 } \cdot \frac{l}{l(M + m - m \cos^2 x_1)}  =  0  \ \ \ . & 
+  \label{eq:gZeroCondition2}
+\end{flalign}
+%
+It is attempted to cancel the two therms in \autoref{eq:gZeroCondition2} by choosing,
+\begin{flalign}
+%  \frac{\partial \phi_2}{\partial x_3 } &=  \frac{l}{\cos x_1} \ \ , \ \ \ \ \ \frac{\partial \phi_2}{\partial x_4 } =  -1  & 
+  \frac{\partial \phi_2}{\partial x_3 } &=  l \ \ , \ \ \ \ \ \frac{\partial \phi_2}{\partial x_4 } =  -\cos x_1  & 
+  \label{eq:gZeroConditionCancle}
+\end{flalign}
+\vspace{-22pt}
+\begin{flalign}
+%  \phi_2 &=  \frac{l}{\cos x_1} \int  d x_3  - \int  d x_4  & \\
+%  \phi_2 &=  \frac{l}{\cos x_1} x_3  - x_4 + \text{C}_1  \ \ \ . &
+  \phi_2 &=  l \int  d x_3  - \cos x_1 \int  d x_4  & \\
+  \phi_2 &=  l x_3 - \cos x_1 x_4 + \text{C}_1  \ \ \ , & 
+  \label{eq:gZeroConditionIntegral}
+\end{flalign}
+where C$_1$ is an integration constant. It is also required that $\phi(0)=0$, so C$_1=0$, resulting in the final transformation,
+%
+\begin{flalign}
+  T(\vec{x})
+  &=
+  \begin{bmatrix}
+    x_2 \\
+    %\frac{l}{\cos x_1} x_3  - x_4 \\ 
+    l x_3 - \cos x_1 x_4 \\
+    x_1 \\
+    x_3
+  \end{bmatrix}  \ \ \ . &
+\end{flalign}
+%
+Locating the input in the derivative of the transform,
+\begin{flalign}
+  \frac{d }{d t } T(\vec{x})
+  &=
+  \begin{bmatrix}
+    \dot{x}_2 \\
+    %\frac{l \sin x1}{\cos^2 x_1} \dot{x}_1 x_3 +  \frac{l}{\cos x_1} \dot{x}_3 - \dot{x}_4 \\ 
+    l \dot{x}_3 + \sin x_1 x_4 \dot{x}_1 - \cos x_1 \dot{x}_4 \\
+    \dot{x}_1 \\
+    \dot{x}_3
+  \end{bmatrix}  \ \ \ . &
+\end{flalign}
+Both $\dot{x}_3$ and $\dot{x}_3$ contains the input, so the second element, $\frac{\partial }{\partial \vec{x} } T_2(\vec{x})$, is further evaluated by substitution of the state derivatives from \autoref{eq:reducedNonlinearStateSpace},
+\begin{flalign}
+  %\frac{d}{dt} T_2(\vec{x}) &= \frac{l \sin x1}{\cos^2 x_1} x_3^2 +  \tfrac{l}{\cos x_1} (f_1(\vec{x}) +  \tfrac{\cos x_1}{l (M + m - m \cos^2 x_1)} F)  - (f_2(\vec{x}) + \tfrac{1}{M + m - m \cos^2 x_1} F) & \nonumber \\
+  %\frac{d}{dt} T_2(\vec{x}) &= \frac{l \sin x1}{\cos^2 x_1} x_3^2 +  \tfrac{l}{\cos x_1} f_1(\vec{x})  - f_2(\vec{x})  \ \ \ , & \\
+  \frac{d}{dt} T_2(\vec{x}) &= l (f_1(\vec{x}) +  \tfrac{\cos x_1}{l (M + m - m \cos^2 x_1)} F) + \sin x_1 x_4 x_3 - \cos x_1 (f_2(\vec{x}) + \tfrac{1}{M + m - m \cos^2 x_1} F)  & \\
+  \frac{d}{dt} T_2(\vec{x}) &= \sin x_1 x_4 x_3 + l f_1(\vec{x}) - \cos x_1 f_2(\vec{x})   \ \ \ , &
+\end{flalign}
+showing that the input only appears on the fourth element in the derivative of the transformation. This leads to choosing $[\ \phi_1\ \phi_2\ \psi_1\ \psi_2\ ]^T = [\ \eta_1\ \eta_2\ \eta_3\ \xi\ ]^T$, according to \autoref{eq:regularForm1} and \ref{eq:regularForm2}, as the new variables, with its derivatives,
+\begin{flalign}
+  \begin{bmatrix}
+    \dot{\eta}_1   \\
+    \dot{\eta}_2   \\
+    \dot{\eta}_3   \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+    \begin{picture} (0,0)(0,0) \multiput(-2,14)(4,0){3}{\line(2,0){2}} \end{picture}
+    \dot{\xi}
+  \end{bmatrix} 
+  &=
+  \overbrace{
+  \underbrace{
+    \begin{bmatrix}
+      x_4    \\
+      %\frac{l \sin x1}{\cos^2 x_1} x_3^2 +  \tfrac{l}{\cos x_1} f_1(\vec{x})  - f_2(\vec{x}) \\ 
+      \sin x_1 x_4 x_3 + l f_1(\vec{x}) - \cos x_1 f_2(\vec{x})  \\
+      x_3    \\ %these are dotted lines, yea, that's LaTeX for ya, go figure..
+      \begin{picture} (0,0)(0,0) \multiput(-65,14)(4,0){40}{\line(2,0){2}} \end{picture}
+      f_1(\vec{x}) 
+    \end{bmatrix}
+  }_{f_b} }^{f_a}
+  +
+  \underbrace{
+    \begin{bmatrix}
+      0    \\
+      0    \\
+      0    \\  %these are dotted lines, yea, that's LaTeX for ya, go figure..
+      \begin{picture} (0,0)(0,0) \multiput(4,14)(4,0){17}{\line(2,0){2}} \end{picture}
+      \frac{\cos x_1}{l (M + m - m \cos^2 x_1)}
+    \end{bmatrix}
+  }_{g_b} F  \ \ \ , &
+\label{eq:regularFormWithX}
+\end{flalign}
+which is the system on \textit{regular form}, however, to achieve the full change of variables, s.t.
+\begin{flalign}
+  \vec{\dot{\eta}} &=  f_a(\vec{\eta},\xi)    \\
+  \dot{\xi}        &=  f_b(\vec{\eta},\xi) + g_b(\vec{\eta},\xi) F    \ \ \ , &
+\end{flalign}
+%
+the inverse transform is found,
+\begin{flalign}
+  \begin{bmatrix}
+    \eta_1   \\
+    \eta_2   \\
+    \eta_3   \\
+    \xi
+  \end{bmatrix} 
+  &=
+  \begin{bmatrix}
+    x_2 \\
+    %\frac{l}{\cos x_1} x_3  - x_4 \\
+    l x_3 - \cos x_1 x_4 \\
+    x_1 \\
+    x_3
+  \end{bmatrix} \ \ \ \ \ \ \ \ \ 
+  \begin{bmatrix}
+    x_1   \\
+    x_2   \\
+    x_3   \\
+    x_4
+  \end{bmatrix} 
+  =
+  \begin{bmatrix}
+    \eta_3 \\
+    \eta_1 \\ 
+    \xi    \\
+    %\frac{l}{\cos \eta_3} \xi -\eta_2
+    \frac{l\xi - \eta_2}{\cos \eta_3}
+  \end{bmatrix}  \ \ \ , &
+\end{flalign}
+to then formulate \autoref{eq:regularFormWithX} in therms of $[\ \eta_1\ \eta_2\ \eta_3\ \xi\ ]^T$, \fxnote{word on diffeomorphism, inverse transform exist.. smthng.}
+%
+\begin{flalign}
+  \begin{bmatrix}
+    \dot{\eta}_1   \\
+    \dot{\eta}_2   \\
+    \dot{\eta}_3   \\
+    \dot{\xi}
+  \end{bmatrix} 
+  &=
+  \begin{bmatrix}
+    %\frac{l}{\cos \eta_3} \xi -\eta_2    \\
+    \frac{l\xi - \eta_2}{\cos \eta_3}     \\
+    %\frac{l \sin \eta_3}{\cos^2 \eta_3} \xi^2 +  \tfrac{l}{\cos \eta_3} f_1(\vec{\eta},\xi)  - f_2(\vec{\eta},\xi) \\ 
+    \frac{\sin \eta_3}{\cos \eta_3}(l\xi - \eta_2) \xi + l f_1(\vec{\eta},\xi) - \cos \eta_3 f_2(\vec{\eta},\xi)    \\
+    \xi   \\
+    f_1(\vec{\eta},\xi) 
+  \end{bmatrix} 
+  + 
+  \begin{bmatrix}
+    0    \\
+    0    \\
+    0    \\ 
+    \frac{\cos \eta_3}{l (M + m - m \cos^2\eta_3)}
+  \end{bmatrix} F  \ \ \ , &
+\label{eq:regularFormWithEtaXi}
+\end{flalign}
+where,
+\begin{flalign}
+%f_1(\vec{\eta},\xi) &=  \frac{(M + m) (  -( b_{p,v} \xi + \tanh(\text{k}_\text{tanh}\xi) b_{p,c} ) + m g l \sin \eta_3  )}{l^2 m ( M + m - m \cos^2 \eta_3 )}   &  \\
+%                    &-    \frac{\cos \eta_3 (  m l \sin \eta_3 \xi^2 + (  b_{c,v} (\frac{l}{\cos \eta_3} \xi -\eta_2)  + \tanh(\text{k}_\text{tanh}(\frac{l}{\cos \eta_3} \xi -\eta_2)) b_{c,c} )  )}{l (M + m - m \cos^2 \eta_3)}  & \\
+%f_2(\vec{\eta},\xi) &=  \frac{\cos \eta_3 (  -( b_{p,v} \xi + \tanh(\text{k}_\text{tanh}\xi) b_{p,c} ) + m g l \sin \eta_3  )}{l (M + m - m \cos^2 \eta_3)}   & \\
+%                    &-   \frac{ m l \sin \eta_3 \xi^2 + (  b_{c,v} (\frac{l}{\cos \eta_3} \xi -\eta_2)  + \tanh(\text{k}_\text{tanh}(\frac{l}{\cos \eta_3} \xi -\eta_2)) b_{c,c} ) }{M + m - m \cos^2 \eta_3}       \ \ \ . & \\
+f_1(\vec{\eta},\xi) &=  \frac{(M + m) ( m g l \sin \eta_3 - b_{p,v} \xi - \tanh(\text{k}_\text{tanh}\xi) b_{p,c}  )}{l^2 m ( M + m - m \cos^2 \eta_3 )}   &  \\
+                    &-    \frac{\cos \eta_3 (  m l \sin \eta_3 \xi^2 +  b_{c,v} \frac{l\xi - \eta_2}{\cos \eta_3}  + \tanh(\text{k}_\text{tanh}\frac{l\xi - \eta_2}{\cos \eta_3}) b_{c,c}   )}{l (M + m - m \cos^2 \eta_3)}  & \\
+f_2(\vec{\eta},\xi) &=  \frac{\cos \eta_3 (  m g l \sin \eta_3 - b_{p,v} \xi - \tanh(\text{k}_\text{tanh}\xi) b_{p,c}   )}{l (M + m - m \cos^2 \eta_3)}   & \\
+                    &-   \frac{ m l \sin \eta_3 \xi^2 +   b_{c,v} \frac{l\xi - \eta_2}{\cos \eta_3}  + \tanh(\text{k}_\text{tanh}\frac{l\xi - \eta_2}{\cos \eta_3}) b_{c,c}  }{M + m - m \cos^2 \eta_3}       \ \ \ . &
+\end{flalign}
+
+%  B_p(\xi)                                 = b_{p,v} \xi + \tanh(\text{k}_\text{tanh}\xi) b_{p,c}
+%  B_c(\frac{l}{\cos \eta_3} \xi -\eta_2)   = b_{c,v} (\frac{l}{\cos \eta_3} \xi -\eta_2)  + \tanh(\text{k}_\text{tanh}(\frac{l}{\cos \eta_3} \xi -\eta_2)) b_{c,c}
+%  {eq:frictionTanh}
+%  B_p(\xi)                                 = b_{p,v} \xi + \tanh(\text{k}_\text{tanh}\xi) b_{p,c}
+%  B_c(\frac{l\xi - \eta_2}{\cos \eta_3})   = b_{c,v} (\frac{l\xi - \eta_2}{\cos \eta_3})  + \tanh(\text{k}_\text{tanh}(\frac{l\xi - \eta_2}{\cos \eta_3})) b_{c,c}
+%  {eq:frictionTanh}

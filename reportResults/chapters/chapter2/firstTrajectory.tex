@@ -1,0 +1,115 @@
+\chapter{First Trajectory}
+Firstly the initial and final values of of $\theta$ and $\dot{\theta}$ are known. Further, the $\theta$-dynamics are known, also for non-zero forces. In the state space and general equations, \autoref{eq:stateSpaceThetaDynamics} and \autoref{eq:alphaBetaGammaGeneral}, the input force is contained by the $\gamma$-function.\\
+The problem to be solved is the integral in \autoref{eq:alphaBetaGammaYPQintFactorProductRuleIntegrationGeneralPQback_limits}, which perserves its zero value along the trajectory from initial to final value assuming the solution exist. It is noted that $\alpha(\theta)>0$ for any real value of $\theta$ in this system as is required.
+%If now \autoref{eq:alphaBetaGammaGeneral} is seen as an initial value problem. After some manipulation, \fxnote{source Anton's paper(s)} \fxnote{maybe include further explanation/derivations} it is seen that the following function preserves its zero value along the trajectory from initial to final value, assuming the solution exists while requiring $\alpha$ to be non-zero,
+%
+%\begin{flalign}
+%  \dot{\theta}^2 - \psi (\theta_0, \theta)
+%  \left(
+%  \dot{\theta}_0^2 - \int\limits_{\theta_0}^{\theta} \psi (\theta_0, \theta)
+%  \frac{2 \gamma(s) }{ \alpha(s) } ds
+%  \right)
+%  &=  0   \ \ \ , & %\unit{N \cdot m}
+%  \label{eq:ipv}
+%\end{flalign}
+%\ \ \  where,
+%\begin{flalign}
+%  \ \ \ \ \ \ \ \psi (\theta_0, \theta) &=
+%  \exp \left\{
+%         -2 \int\limits_{\theta_0}^{\theta} \frac{\beta(\tau)}{\alpha(\tau)}  d\tau
+%       \right\}   \ \ \ . \nonumber &
+%\end{flalign}
+%
+The initial values are $(\theta_0, \dot{\theta}_0) = (\pi,0)$ and the final values are chosen to be $(\theta_\text{f}, \dot{\theta}_\text{f}) = (\frac{7\pi}{4}), 0$, which should should achieve a reasonable starting point for the next trajectory.
+It turns out, that in this case the problem can be solved analytically. To break up the problem, \autoref{eq:alphaBetaGammaYPQintFactorProductRuleIntegrationGeneralPQback_limits} is rewritten as,
+\begin{flalign}
+  I(\theta,\dot{\theta},\theta_0,\dot{\theta}_0) &=
+  \dot{\theta}^2 -
+    \psi (\theta_0, \theta)
+  \left(
+  \dot{\theta}_0^2 -
+  \int\limits_{\theta_0}^{\theta}
+  \psi (s, \theta_0)
+  \frac{2 \gamma (s)}{\alpha (s)}
+  ds
+  \right)  \ \ \ , & %\unit{N \cdot m}
+  \label{eq:alphaBetaGammaYPQintFactorProductRuleIntegrationGeneralPQbackLimits_psi}
+\end{flalign}
+\ \ \  where,
+\begin{flalign}
+  \ \ \ \ \ \ \ \psi (\theta_1, \theta_2) &=
+  \exp \left[
+         -2 \int\limits_{\theta_1}^{\theta_2} \frac{\beta(\tau)}{\alpha(\tau)}  d\tau
+       \right]   \ \ \ . \nonumber &
+\end{flalign}
+For this trajectory, both the the initial and final angular velocity, $\dot{\theta}_0$ and $\dot{\theta}_\text{f}$, are zero, so $\dot{\theta}_0^2 = 0$ and $\dot{\theta}^2 = 0$, in \autoref{eq:alphaBetaGammaYPQintFactorProductRuleIntegrationGeneralPQbackLimits_psi}.\\
+For the pendulum, 
+\begin{flalign}
+  \ \ \ \ \ \ \ \psi (\theta_1, \theta_2) &=
+  \exp \left[
+  -2 \int\limits_{\theta_1}^{\theta_2} \frac{\frac{m^2 l^2}{M + m} \cos \tau \sin \tau}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \tau}  d\tau
+  \right]   \ \ \ . \nonumber &  
+\end{flalign}
+Applying u-substitution to solve this exponential integral and inserting the general limits results in,
+\begin{flalign}
+  \ \ \ \ \ \ \ \psi (\theta_1, \theta_2) &=
+  \frac{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta_1}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta_2}   \ \ \ .  &  
+\end{flalign}
+For each set of limits,
+\begin{flalign}
+  \ \ \ \ \ \ \ \psi (\theta_0, \theta) &=
+  \frac{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta_0}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta} \whereOne{\theta_0 = \pi} = \frac{m l^2 - \frac{m^2 l^2}{M + m}}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta}  \ \ \ ,  &
+  \label{eq:psi_theta}
+\end{flalign}
+and
+\begin{flalign}
+  \ \ \ \ \ \ \ \psi (s, \theta_0) &=
+  \frac{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 s}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta_0} \whereOne{\theta_0 = \pi} = \frac{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 s}{m l^2 - \frac{m^2 l^2}{M + m}} \ \ \ .  &  
+  \label{eq:psi_s}
+\end{flalign}
+Inserting these results, \autoref{eq:psi_theta} and \autoref{eq:psi_s}, along with the expressions for $\alpha(s)$ and $\gamma(s)$ into \autoref{eq:alphaBetaGammaYPQintFactorProductRuleIntegrationGeneralPQbackLimits_psi} yields,
+\begin{flalign}
+  I(\theta,\dot{\theta},\theta_0,\dot{\theta}_0) &= \frac{m l^2 - \frac{m^2 l^2}{M + m}}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta}
+  \left(
+  -
+  \int\limits_{\theta_0}^{\theta}
+  \frac{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 s}{m l^2 - \frac{m^2 l^2}{M + m}} \cdot
+  \frac{2 (- m g l \sin s - \frac{m l}{M + m} \cos s F)}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 s}
+  ds
+  \right) & \nonumber \\
+  %
+  I(\theta,\dot{\theta},\theta_0,\dot{\theta}_0) &= \frac{m l^2 - \frac{m^2 l^2}{M + m}}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta}
+  \left(
+  - 2
+  \int\limits_{\theta_0}^{\theta}
+  \frac{- m g l \sin s - \frac{m l}{M + m} \cos s F}{m l^2 - \frac{m^2 l^2}{M + m}}
+  ds
+  \right) & \\
+  %
+  I(\theta,\dot{\theta},\theta_0,\dot{\theta}_0) &= \frac{m l^2 - \frac{m^2 l^2}{M + m}}{m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta}
+  \left(
+  - 4 \left[ \frac{ M g + m g - F \tan\frac{s}{2} }{M l (\tan^2\frac{s}{2} + 1)}  \right]_{\theta_0}^\theta
+  \right) \ \ \ . & %\unit{N \cdot m}
+  \label{eq:alphaBetaGammaYPQintFactorProductRuleIntegrationGeneralPQbackLimitsPsi_pendulum}
+\end{flalign}
+%  \alpha (\theta) &=  m l^2 - \frac{m^2 l^2}{M + m} \cos^2 \theta  & \\
+%  \beta  (\theta) &=  \frac{m^2 l^2}{M + m} \cos \theta \sin \theta & \\
+%  \gamma (\theta) &=  - m g l \sin \theta - \frac{m l}{M + m} \cos \theta F   \ \ \ . & %\unit{N \cdot m}
+%
+%\begin{flalign}
+%  \left[ -f \frac{m l}{M + m} \sin(s) - m g l \cos(s) \right ]_{\theta_0}^\theta &=  0   \ \ \ . & %\unit{N \cdot m}
+%  \label{eq:solution}
+%\end{flalign}
+Inserting initial and final value of $\theta$ and solving for $F$, the force which creates the desired trajectory is obtained. Also note that for this trajectory the applied force is constant and negative, pulling the cart to the left.
+
+%Going back to the $\theta$-dynamics, it is possible to construct a phase portrait, see \autoref{fig:phasePortraitFirstTrajectry}, including this negative constant force.
+%
+%\begin{figure}[H]
+%  \includegraphics[width=.8\textwidth]{figures/firstTrajectory}
+%  \caption{Phase portrait of the $\theta$-dynamics including a constant applied force, where $x_1 = \theta$ and $x_2 = \dot{\theta}$. The phase portrait is shifted negatively along $\theta$ because of the applied force. This allows the desired trajectory (blue) from the initial downward position.}
+%  \label{fig:phasePortraitFirstTrajectry}
+%\end{figure}
+
+%Note how the entire phase portrait is shifted in the negative $\theta$ ($x_1$) direction. This could be expected from \autoref{eq:alphaBetaGamma}, since the force only scales the magnitude of a term which otherwise only depends on $\theta$. Further, the constant force applied is negative, thus the negative shift in the $\theta$ direction.\\
+%This shift of the phase portrait means that the initial downward position of the pendulum now is placed in an orbit rather than an equilibrium.\\
+%Additionally, the trajectory (blue) reaches zero angular velocity just as it hits the target angle. The trajectory does however not stop there. It oscillates around the new center equilibrium. Therefore the next input force for the next trajectory must be applied the moment zero angular velocity is achieved.
